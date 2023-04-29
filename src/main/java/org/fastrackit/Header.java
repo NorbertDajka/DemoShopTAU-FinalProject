@@ -11,8 +11,8 @@ public class Header {
     private SelenideElement greetingsElement = $(".navbar-text span span");
     private final SelenideElement basketIcon = $(".fa-shopping-cart");
     private final SelenideElement wishlistIcon = $("[href='#/wishlist']");
-    private SelenideElement cartBadge = $(".shopping_cart_badge");
-    private ElementsCollection cartBadges = $$(".shopping_cart_badge");
+    private SelenideElement cartBadge = $("[href='#/cart'] .shopping_cart_badge");
+    private ElementsCollection cartBadges = $$("[href='#/cart'] .shopping_cart_badge");
     public final SelenideElement wishlistBadge = $("a[href='#/wishlist'] .shopping_cart_badge");
 
     public Header() {
@@ -39,5 +39,9 @@ public class Header {
     }
     public void clickOnWishlistIcon() {
         wishlistIcon.click();
+    }
+
+    public SelenideElement getWishlistBadge() {
+        return wishlistBadge;
     }
 }

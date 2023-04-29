@@ -21,7 +21,7 @@ public class Product {
         this.productLink = $(productSelector);
         this.productCard = this.productLink.parent().parent();
         this.addToBasketButton = productCard.$(".fa-cart-plus");
-        this.addToFavoritesButton = productCard.$("div:nth-of-type(6) [data-icon='heart']");
+        this.addToFavoritesButton = productCard.$("[data-icon='heart']");
         this.removeFromWishListButton = productCard.$(".fa-heart-broken");
         this.name = name;
         this.price = price;
@@ -51,6 +51,9 @@ public class Product {
 
     public boolean isRemoveFromWishlistButtonAppeared() {
         return this.removeFromWishListButton.isDisplayed() && this.removeFromWishListButton.exists();
+    }
+    public void clickOnRemoveFromWishlistButton() {
+        this.removeFromWishListButton.click();
     }
     @Override
     public String toString() {

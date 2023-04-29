@@ -9,6 +9,7 @@ public class WishlistPage extends Page{
 
     private final SelenideElement wishListProductCard = $("div .card");
     private final SelenideElement wishListProductCardTitle = $("div .card .card-link");
+    private final SelenideElement wishListProductAddToCartButton =$("div .card .fa-cart-plus");
 
     Product product;
 
@@ -21,8 +22,18 @@ public class WishlistPage extends Page{
     }
     public String getInWishlistProductName(){return product.getName();
     }
+    public void getWishlistProductRemoveFromWishlistButton() {
+        this.product.clickOnRemoveFromWishlistButton();
+    }
+    public Product getProduct() {
+        return product;
+    }
+
     public boolean isDisplayedAndExists(){
         return wishListProductCard.isDisplayed()&& wishListProductCard.exists();
+    }
+    public void addProductToCart(Product product){
+        this.wishListProductAddToCartButton.click();
 
     }
 }
