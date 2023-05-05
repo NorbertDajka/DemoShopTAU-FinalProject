@@ -16,6 +16,8 @@ public class CartPage extends Page {
     private List<Product> productsInCart = new ArrayList<>();
     private final ElementsCollection distinctProducts = $$(".row a");
     private final SelenideElement cartTotalAmount = $(".amount-total .amount");
+    private final SelenideElement checkoutButton = $("[href='#/checkout-info']");
+
 
     public int getNumberOfDistinctProducts() {
         return distinctProducts.size();
@@ -56,5 +58,8 @@ public class CartPage extends Page {
     public double getTotalCartAmount() {
         String totalWithoutCurrency = cartTotalAmount.text().replace("$", "");
         return Double.parseDouble(totalWithoutCurrency);
+    }
+    public void checkout(){
+        this.checkoutButton.click();
     }
 }

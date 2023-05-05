@@ -4,7 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class ProductDetailsPage {
+public class ProductDetailsPage extends Page {
 
     private final SelenideElement addToBasketButton = $(".fa-cart-plus");
 

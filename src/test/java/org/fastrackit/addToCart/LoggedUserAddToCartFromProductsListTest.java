@@ -8,19 +8,21 @@ import org.fastrackit.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Feature("Add to cart")
 public class LoggedUserAddToCartFromProductsListTest extends BaseTestConfig {
     DemoShopPage page;
-
+    LoginModal loginModal;
+    Product metalMouse;
     @BeforeMethod
     public void setup() {
         this.page = new DemoShopPage();
         page.openDemoShopApp();
+
+        this.loginModal = new LoginModal();
+        this.metalMouse= new Product("7", "Practical Metal Mouse", "9.99");
     }
 
     @AfterMethod
@@ -32,19 +34,10 @@ public class LoggedUserAddToCartFromProductsListTest extends BaseTestConfig {
 
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "validUserDataProvider")
     public void loggedUserAddProductToCart(User user) {
-        page.getHeader().clickOnTheLoginButton();
-        LoginModal loginModal = new LoginModal();
-        loginModal.fillInUsername(user.getUsername());
-        loginModal.fillInPassword(user.getPassword());
-        loginModal.clickSubmitButton();
-
-        Product metalMouse = new Product("7", "Practical Metal Mouse", "9.99");
+        loginModal.login(user.getUsername(),user.getPassword());
         metalMouse.addToCart();
 
-        boolean areProductsAdded = page.getHeader().areAddedProductsInCart();
-        assertTrue(areProductsAdded, "Cart badge is displayed when products are added to cart.");
-        String numberOfProductsInCart = page.getHeader().getNumberOfProductsInCart();
-        assertEquals(numberOfProductsInCart, "1", "Logged in user and ads 1 product to cart.");
-
+        assertTrue(page.getHeader().areAddedProductsInCart(), "Cart badge is displayed when products are added to cart.");
+        assertEquals(page.getHeader().getNumberOfProductsInCart(), "1", "Logged in user and ads 1 product to cart.");
     }
 }

@@ -15,11 +15,14 @@ import static org.testng.Assert.assertTrue;
 @Feature("User Login")
 public class LoginTest extends BaseTestConfig {
     DemoShopPage page;
+    LoginModal loginModal;
 
     @BeforeMethod
     public void setup() {
         page = new DemoShopPage();
         page.openDemoShopApp();
+
+        this.loginModal = new LoginModal();
     }
 
     @AfterMethod
@@ -30,21 +33,15 @@ public class LoginTest extends BaseTestConfig {
 
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "validUserDataProvider")
     public void userCanLoginOnDemoShopPage(User user) {
-        page.getHeader().clickOnTheLoginButton();
-        LoginModal loginModal = new LoginModal();
-        loginModal.fillInUsername(user.getUsername());
-        loginModal.fillInPassword(user.getPassword());
-        loginModal.clickSubmitButton();
+        loginModal.login(user.getUsername(),user.getPassword());
+
         assertEquals(page.getHeader().getGreetingsMsg(), user.getExpectedGreetingsMsg(), "Greetings message is : " + user.getExpectedGreetingsMsg());
     }
 
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "invalidUserDataProvider")
     public void userCanNotLoginOnDemoShopPageWithInvalidUser(User user) {
-        page.getHeader().clickOnTheLoginButton();
-        LoginModal loginModal = new LoginModal();
-        loginModal.fillInUsername(user.getUsername());
-        loginModal.fillInPassword(user.getPassword());
-        loginModal.clickSubmitButton();
+
+        loginModal.login(user.getUsername(), user.getPassword());
 
         assertTrue(loginModal.isDisplayed());
         assertTrue(loginModal.isErrorMsgDisplayed(), "Login error message is displayed.");

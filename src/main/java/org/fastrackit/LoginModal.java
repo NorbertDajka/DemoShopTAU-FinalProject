@@ -35,5 +35,17 @@ public class LoginModal {
     public boolean isDisplayed() {
         return this.modal.exists() && this.modal.isDisplayed();
     }
+
+    public void login(String username, String password) {
+
+        Header header = new Header();
+        header.clickOnTheLoginButton();
+
+        LoginModal loginpage = new LoginModal();
+        loginpage.fillInUsername(username);
+        loginpage.fillInPassword(password);
+        loginpage.clickSubmitButton();
+
+    }
 }
 

@@ -5,11 +5,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.fastrackit.*;
 import org.fastrackit.config.BaseTestConfig;
-import org.fastrackit.CartPage;
-import org.fastrackit.DemoShopPage;
-import org.fastrackit.Footer;
-import org.fastrackit.Product;
 import org.testng.annotations.*;
 
 import static org.testng.Assert.assertEquals;
@@ -18,44 +15,41 @@ import static org.testng.Assert.assertEquals;
 @Feature("Add two products to basket")
 public class AddTwoDifferentProductsToCartTest extends BaseTestConfig {
     DemoShopPage page;
-
-    @BeforeTest
-    public void setup() {
-        page = new DemoShopPage();
-        page.openDemoShopApp();
-    }
-
-    @AfterTest
-    public void closeBrowser() {
-        Selenide.closeWindow();
-    }
+    Product practicalMetalMouse;
+    Product softPizza;
+    ProductDetailsPage detailsPage;
+    CartPage cartPage;
 
     @BeforeMethod
-    public void prerequisites() {
-        Product metalMouse = new Product("7", "Practical Metal Mouse", "9.99");
-        metalMouse.addToCart();
-        Product softPizza = new Product("9", "Gorgeous Soft Pizza", "19.99");
-        softPizza.addToCart();
-    }
-
-    @AfterMethod
-    public void cleanup() {
-        System.out.println("Cleaning up after the test.");
+    public void setup() {
+        this.page = new DemoShopPage();
         page.openDemoShopApp();
-        Footer footer = new Footer();
-        footer.resetPage();
+
+        this.practicalMetalMouse = new Product("7", "Practical Metal Mouse", "9.99");
+        practicalMetalMouse.addToCart();
+
+        this.softPizza = new Product("9", "Gorgeous Soft Pizza", "19.99");
+        softPizza.addToCart();
+
+
+        this.detailsPage = new ProductDetailsPage();
+        this.cartPage = new CartPage();
+    }
+    @AfterMethod
+    public void reset() {
+        Selenide.refresh();
+        page.getFooter().resetPage();
     }
 
     @Test
     public void adding_metal_mouse_and_gorgeous_pizza_to_cart_two_products_are_in_cart() {
-        String numberOfProductsInCart = page.getHeader().getNumberOfProductsInCart();
-        assertEquals(numberOfProductsInCart, "2", "Adding 2 different products in cart.");
+        assertEquals(page.getHeader().getNumberOfProductsInCart(), "2", "Adding 2 different products in cart.");
     }
 
     @Test
     public void adding_metal_mouse_and_gorgeous_pizza_to_cart_navigate_to_cart_page_two_products_are_in_cart() {
         page.getHeader().clickOnTheCartIcon();
-        CartPage cartPage = new CartPage();
+
         int numberOfDistinctProducts = cartPage.getNumberOfDistinctProducts();
         int totalProductsInCart = cartPage.getTotalProductsInCart();
 
@@ -68,9 +62,10 @@ public class AddTwoDifferentProductsToCartTest extends BaseTestConfig {
     @Description("When adding a product to cart, the total cost of the product is correctly calculated int the Cart page.")
     public void adding_metal_mouse_and_gorgeous_pizza_products_to_cart_total_cost_is_correctly_added() {
         page.getHeader().clickOnTheCartIcon();
-        CartPage cartPage = new CartPage();
+
         double totalCartCost = cartPage.getTotalCartCostBasedOnProducts();
         double totalCartAmount = cartPage.getTotalCartAmount();
+
         assertEquals(totalCartCost, 29.98, "The total products is 29.98");
         assertEquals(totalCartAmount, 29.98, "The cart total is 29.98");
     }

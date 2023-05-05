@@ -6,90 +6,74 @@ import org.fastrackit.*;
 import org.fastrackit.config.BaseTestConfig;
 import org.fastrackit.dataprovider.UserDataProvider;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.fastrackit.dataprovider.*;
 
+import static org.testng.Assert.*;
 
 
 public class RemoveProductFromWishlistTest extends BaseTestConfig {
-    @AfterMethod
-    public void cleanup(){
-        Footer footer = new Footer();
-        footer.resetPage();
-    }
-    public static void login(String username,String password){
-        LoginModal loginpage = new LoginModal();
-        loginpage.fillInUsername(username);
-        loginpage.fillInPassword(password);
-        loginpage.clickSubmitButton();
-    }
-    @BeforeMethod()
+    DemoShopPage page;
+    LoginModal loginModal;
+    Header header;
+    Product licensedSteelGloves;
+    WishlistPage wishlistPage;
+    @BeforeMethod
     public void setup(){
-        DemoShopPage page = new DemoShopPage();
+        this.page = new DemoShopPage();
         page.openDemoShopApp();
 
-        Header header = new Header();
-        header.clickOnTheLoginButton();
-
-
-
-
-
+        this.loginModal = new LoginModal();
+        this.licensedSteelGloves = new Product("8","Licensed Steel Gloves","14.99");
+        this.header = new Header();
+        this.wishlistPage = new WishlistPage(licensedSteelGloves);
     }
+    @AfterMethod
+    public void reset() {
+        Selenide.refresh();
+        page.getFooter().resetPage();
+    }
+
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "validUserDataProvider")
     @Description("Removing a whislisted product from home page and verified that dissapears from badge")
-    public void removing_a_product_from_wishlist_verified_at_badge(User user) {
+    public void removing_a_product_from_wishlist_on_homepage_as_logged_user_verified_at_badge(User user) {
+        loginModal.login(user.getUsername(),user.getPassword());
 
-        login(user.getUsername(),user.getPassword());
-
-        Product licensedSteelGloves = new Product("8","Licensed Steel Gloves","14.99");
         licensedSteelGloves.addToWishlist();
+        assertTrue(header.getWishlistBadge().exists(),"Product added to wishlist from homepage");
 
         licensedSteelGloves.clickOnRemoveFromWishlistButton();
-
-        Header header = new Header();
-
-        Assert.assertFalse(header.getWishlistBadge().exists(),"Product removed from wishlist from homepage");
+        assertFalse(header.getWishlistBadge().exists(),"Product removed from wishlist from homepage");
     }
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "validUserDataProvider")
     @Description("Removing a whislisted product from wishlist page and verified that dissapears from badge")
-    public void removing_a_product_from_wishlist_page_verified_at_badge(User user) {
+    public void removing_a_product_from_wishlist_page_as_logged_in_user_verified_at_badge(User user) {
 
-        login(user.getUsername(),user.getPassword());
+        loginModal.login(user.getUsername(),user.getPassword());
 
-        Product licensedSteelGloves = new Product("8","Licensed Steel Gloves","14.99");
+
         licensedSteelGloves.addToWishlist();
+        assertTrue(header.getWishlistBadge().exists(),"Product added to wishlist from homepage");
 
-        Header header = new Header();
         header.clickOnWishlistIcon();
+        wishlistPage.clickRemoveFromWishlistButton();
 
-        WishlistPage wishlistPage = new WishlistPage(licensedSteelGloves);
-        wishlistPage.getWishlistProductRemoveFromWishlistButton();
-
-        Assert.assertFalse(header.getWishlistBadge().exists(),"Product removed from wishlist from homepage");
+        assertFalse(header.getWishlistBadge().exists(),"Product removed from wishlist from homepage");
     }
 
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "validUserDataProvider")
     @Description("Removing a whislisted product from home page and verified that dissapears from wishlist page")
-    public void removing_a_product_from_wishlist_verified_at_wishlist_page(User user) {
+    public void removing_a_product_from_wishlist_verified_at_wishlist_page_as_logged_in_user(User user) {
 
-        login(user.getUsername(),user.getPassword());
+        loginModal.login(user.getUsername(),user.getPassword());
 
-        Product licensedSteelGloves = new Product("8","Licensed Steel Gloves","14.99");
         licensedSteelGloves.addToWishlist();
+        assertTrue(header.getWishlistBadge().exists(),"Product added to wishlist from homepage");
 
         licensedSteelGloves.clickOnRemoveFromWishlistButton();
-
-        Header header = new Header();
         header.clickOnWishlistIcon();
 
-        WishlistPage wishlist = new WishlistPage(licensedSteelGloves);
-
-        Assert.assertFalse(wishlist.isDisplayedAndExists());
-
+        assertFalse(wishlistPage.productIsDisplayedAndExists());
     }
-    //NEXT verify if dissapears from whislist page
+
 }

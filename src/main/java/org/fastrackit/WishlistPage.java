@@ -2,7 +2,6 @@ package org.fastrackit;
 
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
 public class WishlistPage extends Page{
@@ -22,14 +21,14 @@ public class WishlistPage extends Page{
     }
     public String getInWishlistProductName(){return product.getName();
     }
-    public void getWishlistProductRemoveFromWishlistButton() {
+    public void clickRemoveFromWishlistButton() {
         this.product.clickOnRemoveFromWishlistButton();
     }
     public Product getProduct() {
         return product;
     }
 
-    public boolean isDisplayedAndExists(){
+    public boolean productIsDisplayedAndExists(){
         return wishListProductCard.isDisplayed()&& wishListProductCard.exists();
     }
     public void addProductToCart(Product product){
