@@ -1,5 +1,6 @@
 package org.fastrackit.addToCart;
 
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Feature;
 import org.fastrackit.config.BaseTestConfig;
 import org.fastrackit.dataprovider.User;
@@ -24,12 +25,10 @@ public class LoggedUserAddToCartFromProductsListTest extends BaseTestConfig {
         this.loginModal = new LoginModal();
         this.metalMouse= new Product("7", "Practical Metal Mouse", "9.99");
     }
-
     @AfterMethod
-    public void cleanup() {
-        System.out.println("Cleaning up after the test.");
-        Footer footer = new Footer();
-        footer.resetPage();
+    public void reset() {
+        Selenide.refresh();
+        page.getFooter().resetPage();
     }
 
     @Test(dataProviderClass = UserDataProvider.class, dataProvider = "validUserDataProvider")
