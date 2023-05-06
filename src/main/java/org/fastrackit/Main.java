@@ -1,5 +1,11 @@
 package org.fastrackit;
 
+import org.fastrackit.Body.Header;
+import org.fastrackit.Body.LoginModal;
+import org.fastrackit.Pages.CartPage;
+import org.fastrackit.Pages.DemoShopPage;
+import org.fastrackit.Product.Product;
+
 import java.util.List;
 
 public class Main {

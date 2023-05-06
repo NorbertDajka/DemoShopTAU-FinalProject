@@ -1,6 +1,6 @@
 package org.fastrackit.dataprovider;
 
-import org.fastrackit.Product;
+import org.fastrackit.Product.Product;
 import org.testng.annotations.DataProvider;
 
 public class ProductsDataProvider {
