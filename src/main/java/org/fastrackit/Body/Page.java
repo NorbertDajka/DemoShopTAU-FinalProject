@@ -1,4 +1,4 @@
-package org.fastrackit;
+package org.fastrackit.Body;
 
 import com.codeborne.selenide.Selenide;
 

@@ -4,7 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.fastrackit.Body.Footer;
 import org.fastrackit.Body.Header;
-import org.fastrackit.Page;
+import org.fastrackit.Body.Page;
 
 import java.util.List;
 

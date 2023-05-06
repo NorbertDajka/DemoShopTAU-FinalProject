@@ -2,7 +2,7 @@ package org.fastrackit.Pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.fastrackit.Page;
+import org.fastrackit.Body.Page;
 import org.fastrackit.Product.Product;
 
 import java.text.DecimalFormat;
